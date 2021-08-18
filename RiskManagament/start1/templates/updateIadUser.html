@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+        {% for message in messages %}
+            <p id="messages">{{message}}</p>
+        {% endfor %}
+    
+    <div class="container-fluid">
+
+      <p>
+        <div class="row">
+           <div class="col"><h3> Inherent Risks </h3></div>
+           <div class="col">
+            <h4> UPDATE INHERENT RISKS </h4>
+           </div>
+      </div>
+        </div> 
+      </p>
+
+      <div class="row">
+        <div class="col">
+          <div>
+            <div class="card card-body">
+             <table class="table table-bordered table-striped">
+                 <thead>
+                     <th>index</th>
+                     <th>Inherent Risks</th>
+                     <th>Unrectified Audit Findings</th>
+                     <th>Actions</th>
+                 </thead>
+              {% for ma in iadUser reversed %}
+                 <tr>
+                     <th>{{ forloop.counter }}</th>
+                     <td>{{ma}}</td>
+                     <td>{{ma.unrectifiedAuditFindings}}</td>
+                     <td>
+                      <a class="btn btn-info btn-sm" href="{% url 'updateIadUser' ma.id %} ">
+                          <i class="fas fa-pencil-alt">
+                          </i>
+                          Edit
+                      </a>
+                  </td>
+
+                 </tr>
+              {%endfor%}
+             </table>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div>
+            <div class="card card-body">
+                <form method="post">
+                    {% csrf_token%}
+                    {{ form.as_p }}
+                    <button class="btn btn-app btn-sm mr-4" type="submit" value="Submit"><i class="fas fa-save"></i> Save</button>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+

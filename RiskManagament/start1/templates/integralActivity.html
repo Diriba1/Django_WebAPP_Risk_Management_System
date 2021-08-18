@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+        
+        <div class="container-fluid">
+          <section class="content-header">
+            <div class="container-fluid">
+              <div class="row mb-2">
+                <div class="col-sm-6">
+                  <h1>Integral Activities </h1>
+                </div>
+                <div class="col-sm-6">
+                  <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'majorActivity' %}">Major Activity</a></li>
+                    <li class="breadcrumb-item active"><a href="{% url 'integralActivity' %}">Integral Activity</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'objective' %}">Objective</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'inherentRisk' %}">Inherent Risk</a></li>          
+                  </ol>
+                </div>
+              </div>
+            </div><!-- /.container-fluid -->
+          </section>
+
+            <div class="row">
+              <div class="col-8">
+                <div>
+                  <div class="card card-body">
+                   <table class="table table-bordered table-striped">
+                    <thead>
+                        <th>index</th>
+                        <th>Integral Activities</th>
+                        <th>Major Activities</th>
+                        <th><button class="btn btn-primary"  data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample2">Actions</button></th>
+                    </thead>
+                    {% for ma in integralActivity reversed %}
+                       <tr>
+                           <th>{{ forloop.counter }}</th>
+                           <td>{{ma.name}}</td>
+                           <td>{{ma.majorActivity}}</td>
+                           <td class="collapse multi-collapse" id="multiCollapseExample1">
+                              <a class="btn btn-info btn-sm" href="{% url 'updateIntegralActivity' ma.id %}">
+                                  <i class="fas fa-pencil-alt">
+                                  </i>
+                                  Edit
+                              </a>
+                              <a class="btn btn-info btn-sm" href="{% url 'createObjective' ma.id %} ">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                                Add Objective
+                              </a>
+                              <a class="btn btn-danger btn-sm" href="{% url 'deleteIntegralActivity' ma.id %}">
+                                  <i class="fas fa-trash">
+                                  </i>
+                                  Delete
+                              </a>
+                           </td>
+                        </tr>
+                    {%endfor%}
+                   </table>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <button class="btn btn-primary"  data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Add new</button>
+                <div class="collapse multi-collapse" id="multiCollapseExample2">
+                  <div class="card card-body">
+                      <form method="post">
+                          {% csrf_token%}
+                          {{ form.as_p }}
+                          <button class="btn btn-app btn-sm mr-4" type="submit" value="Submit"><i class="fas fa-save"></i> Save</button>
+                      </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+{%endblock%}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+        {% for message in messages %}
+            <p id="messages">{{message}}</p>
+        {% endfor %}
+    
+    <div class="container-fluid">
+
+      <p>
+        <div class="row">
+           <div class="col"><h3> Integral Activity </h3></div>
+           <div class="col">
+              <h3> Add Objective</h3>
+           </div>
+           </div>
+        </div> 
+      </p>
+
+      <div class="row">
+        <div class="col">
+          <div>
+            <div class="card card-body">
+             <h4>{{integralActivity.name}}</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div >
+            <div class="card card-body">
+                <form method="post">
+                    {% csrf_token%}
+                    {{ form.management_form}}
+                    {% for form in form %}
+                    {{ form }}
+                    <hr>
+                    {% endfor %}
+                    <button class="btn btn-app btn-sm mr-4" type="submit" value="Submit"><i class="fas fa-save"></i> Save</button>
+                    
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+

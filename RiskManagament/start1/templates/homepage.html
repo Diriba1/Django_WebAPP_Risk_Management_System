@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+        <div class="container-fluid">
+
+          <div class="row nav nav-pills" roles="tablist">
+            <div class="col-2">    
+              <p>Name | Type</title></p>
+            </div>
+            <div class="col-8 nav-item btn-group" role="group">
+              <ul class="nav nav-pills list-group list-group-horizontal" role="tablist">
+                <li class="nav-item list-group-item">
+                  <button class="btn nav-link btn-info" type="button" data-toggle="pill" href="#menu1">RISK PROFILE</button>
+                </li>
+                <li class="nav-item list-group-item">
+                  <button class="btn nav-link btn-info" type="button" data-toggle="pill" href="#menu2">RISK MONITARING</button>
+                </li>
+                <li class="nav-item list-group-item">
+                  <button class="btn nav-link btn-info" type="button" data-toggle="pill" href="#menu3">RISK SCORE</button>
+                </li>
+                <li class="nav-item list-group-item">
+                  <button class="btn nav-link btn-info" type="button" data-toggle="pill" href="#menu4">RISK GRADE</button>
+                </li>
+                <li class="nav-item list-group-item">
+                  <button class="btn nav-link btn-info" type="button" data-toggle="pill" href="#menu5">RISK UNIVERSE</button>
+                </li>
+              </ul>
+
+            </div>
+            <div class="col-2 nav-item">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <a href="{% url 'majorActivity' %}" class="btn btn-secondary btn-block">RISK REGISTER</a>             
+              <a href="{% url 'rmcdUser' %}" class="btn btn-secondary btn-block">MANAGEMENT AND COMPLIANCE</a>
+              <a href="{% url 'iadUser' %}" class="btn btn-secondary btn-block">AUDIT FINDINGS</a>    
+            </div>
+            <div class="col-1">
+              
+            </div>
+            <div class="col-9 tab-content">
+              <div id="menu1" class="container tab-pane">
+                <p><h3>RISK PROFILE</h3></p> 
+                <p>
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <th>ID</th>
+                      <th>Inherent Risk</th>
+                      <th>Risk Catagory</th>
+                      <th>Risk Level</th>
+                      <th>Risk Score</th>
+                      <th>Mitigation</th>
+                      <th>Audit Findings </th>
+                    </thead>
+                    {% for IR in inherentRisk reversed %}
+                    <tr>
+                      <td>{{IR.id}}</td>
+                      <td>{{IR.name}}</td>
+                      <td>{{IR.riskCatagory}}</td>
+                      <td></td>
+                      <td></td>
+                      <td>{{IR.riskMitigation}}</td>
+                      <td>{{IR.unrectifiedAuditFindings}}</td>                    
+                    </tr>
+                   {%endfor%}
+                  </table>
+                </p>
+              </div>
+              <div id="menu2" class="container tab-pane">
+                <p><h3>RISK MONITORING</h3></p> 
+                <p>
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <th>ID</th>
+                      <th>Inherent Risk</th>
+                      <th>Risk Catagory</th>
+                      <th>Risk Level</th>
+                      <th>Risk Mitigation</th>
+                      <th>Owner</th>
+                      <th>Target Completion </th>
+                      <th>Status </th>
+                    </thead>
+                    {% for IR in inherentRisk reversed %}
+                    <tr>
+                      <td>{{IR.id}}</td>
+                      <td>{{IR.name}}</td>
+                      <td>{{IR.riskCatagory}}</td>
+                      <td></td>
+                      <td>{{IR.riskMitigation}}</td>
+                      <td>{{IR.owner}}</td>
+                      <td>{{IR.targetCompletion}}</td>
+                      <td>{{IR.status}}</td>                     
+                    </tr>
+                   {%endfor%}
+                  </table>
+                </p>
+              </div>
+              <div id="menu3" class="container tab-pane">
+                <p><h3>RISK SCORE</h3></p> 
+                <p>
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <th>Work Unit</th>
+                      <th>Total Risk Score</th>                      
+                    </thead>
+                    <tr>
+                      <td></td>
+                      <td></td>                                       
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>                                        
+                    </tr>
+                  </table>
+                </p>
+              </div>
+              <div id="menu4" class="container tab-pane">
+                <p><h3>RISK GRADE</h3></p> 
+                <p>
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <th>Work Unit</th>
+                      <th>Risk Grade</th>                      
+                    </thead>
+                    <tr>
+                      <td></td>
+                      <td></td>                                       
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>                                        
+                    </tr>
+                  </table>
+                </p>
+              </div>
+              <div id="menu5" class="container tab-pane">
+                <p><h3>RISK UNIVERSE</h3></p> 
+                <p>
+                  <table class="table table-bordered table-striped">
+                    <thead>
+                      <th>SN</th>
+                      <th>Risk Universe</th> 
+                      <th>Risk Grade</th>                     
+                    </thead>
+                    <tr>
+                      <td></td>
+                      <td></td> 
+                      <td></td>                                       
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>  
+                      <td></td>                                       
+                    </tr>
+                  </table>
+                </p>
+              </div>
+            </div>           
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <hr>
+             <p><h3>VIEW</h3></p>
+             <p>
+              <ul class="nav nav-pills" role="tablist">
+                <li class="nav-item">
+                  <button class="nav-link" data-toggle="pill" href="#menu10">Offices</button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link" data-toggle="pill" href="#menu20">Departments</button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link" data-toggle="pill" href="#menu30">Branches</button>
+                </li>
+              </ul>
+            </p>
+              <div class="col-12 tab-content">
+                <div id="menu10" class="container tab-pane">
+                  
+                  <form method="POST">
+                    {% csrf_token %}
+                    <select name="item_id">
+                      {% for i in offices %}
+                        <option value="{{ i.id}}">{{ i.name }}</option>
+                      {% endfor %}
+                    </select>
+                    <button type="submit" class="btn-success">view</button>
+                  </form>
+
+                </div>
+                <div id="menu20" class="container tab-pane">
+                  <form method="POST">
+                    {% csrf_token %}
+                    <select name="item_id">
+                      {% for i in departments %}
+                        <option value="{{ i.id}}">{{ i.name }}</option>
+                      {% endfor %}
+                    </select>
+                    <button type="submit" class="btn-success">view</button>
+                  </form>
+                </div>
+                <div id="menu30" class="container tab-pane">
+                  <form method="POST">
+                    {% csrf_token %}
+                    <select name="item_id">
+                      {% for i in branches %}
+                        <option value="{{ i.id}}">{{ i.name }}</option>
+                      {% endfor %}
+                    </select>
+                    <button type="submit" class="btn-success">view</button>
+                  </form>
+                </div>
+              </div>     
+
+            </div>
+            <div class="col-9">
+
+            </div>
+          </div>
+          
+        </div>
+      
+
+{% endblock %}
