@@ -2,10 +2,6 @@
 
 {% block page_content %}
 
-        {% for message in messages %}
-            <p id="messages">{{message}}</p>
-        {% endfor %}
-
         <div class="container-fluid">
 
             <p>
@@ -21,7 +17,7 @@
               <div class="col-9">
                 <div>
                   <div class="card card-body">
-                   <table class="table table-bordered table-striped">
+                   <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <th>index</th>
                         <th>Inherent Risks</th>
