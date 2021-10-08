@@ -7,7 +7,7 @@
             <div class="col-2">    
               <p>Name | Type</title></p>
             </div>
-            <div class="col-8 nav-item btn-group" role="group">
+            <div class="col-10 nav-item btn-group" role="group">
               <ul class="nav nav-pills list-group list-group-horizontal" role="tablist">
                 <li class="nav-item list-group-item">
                   <button class="btn nav-link btn-info" type="button" data-toggle="pill" href="#menu1">RISK PROFILE</button>
@@ -27,9 +27,9 @@
               </ul>
 
             </div>
-            <div class="col-2 nav-item">
+            <!-- <div class="col-2 nav-item">
 
-            </div>
+            </div> -->
           </div>
           <div class="row">
             <div class="col-2">
@@ -58,11 +58,11 @@
                     <tr>
                       <td>{{IR.id}}</td>
                       <td>{{IR.name}}</td>
-                      <td>{{IR.riskCatagory}}</td>
+                      <td>{{IR.risk_Catagory}}</td>
                       <td></td>
                       <td></td>
-                      <td>{{IR.riskMitigation}}</td>
-                      <td>{{IR.unrectifiedAuditFindings}}</td>                    
+                      <td>{{IR.risk_Mitigation}}</td>
+                      <td>{{IR.unrectified_Audit_Findings}}</td>                    
                     </tr>
                    {%endfor%}
                   </table>
@@ -71,7 +71,7 @@
               <div id="menu2" class="container tab-pane">
                 <p><h3>RISK MONITORING</h3></p> 
                 <p>
-                  <table id="example2" class="table table-bordered table-striped">
+                  <table id="example1" class="table table-bordered table-striped">
                     <thead>
                       <th>ID</th>
                       <th>Inherent Risk</th>
@@ -86,11 +86,11 @@
                     <tr>
                       <td>{{IR.id}}</td>
                       <td>{{IR.name}}</td>
-                      <td>{{IR.riskCatagory}}</td>
+                      <td>{{IR.risk_Catagory}}</td>
                       <td></td>
-                      <td>{{IR.riskMitigation}}</td>
+                      <td>{{IR.risk_Mitigation}}</td>
                       <td>{{IR.owner}}</td>
-                      <td>{{IR.targetCompletion}}</td>
+                      <td>{{IR.target_Completion}}</td>
                       <td>{{IR.status}}</td>                     
                     </tr>
                    {%endfor%}
@@ -105,14 +105,13 @@
                       <th>Work Unit</th>
                       <th>Total Risk Score</th>                      
                     </thead>
+                    {% for IR in inherentRisk reversed %}
                     <tr>
-                      <td></td>
+                      <td>{{IR.name}}</td>
                       <td></td>                                       
                     </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>                                        
-                    </tr>
+                    {%endfor%}
+                    
                   </table>
                 </p>
               </div>
@@ -124,10 +123,12 @@
                       <th>Work Unit</th>
                       <th>Risk Grade</th>                      
                     </thead>
+                    {% for IR in inherentRisk reversed %}
                     <tr>
-                      <td></td>
+                      <td>{{IR.name}}</td>
                       <td></td>                                       
                     </tr>
+                    {%endfor%}
                     <tr>
                       <td></td>
                       <td></td>                                        
@@ -160,7 +161,7 @@
             </div>           
           </div>
           <div class="row">
-            <div class="col-3">
+            <div class="col-4">
               <hr>
              <p><h3>VIEW</h3></p>
              <p>
@@ -215,7 +216,7 @@
               </div>     
 
             </div>
-            <div class="col-9">
+            <div class="col-8">
 
             </div>
           </div>

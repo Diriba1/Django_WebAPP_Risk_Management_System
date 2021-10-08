@@ -62,7 +62,7 @@ class ObjectiveForm(forms.ModelForm):
 class InherentRiskForm(forms.ModelForm):
     class Meta:
         model = InherentRisk
-        fields = ['objective', 'name', 'riskCatagory', 'procedureManual', 'makerChecker', 'dualControl', 'frequencyofExposure', 'riskCondition', 'consequence']
+        fields = ['objective', 'name', 'risk_Catagory', 'it_Sytem', 'privilage', 'procedure_Manual', 'maker_Checker', 'dual_Control', 'frequency_of_Exposure', 'monetary_Value', 'risk_Condition', 'consequence']
 
 class InherentRiskNameForm(forms.ModelForm):
     class Meta:
@@ -72,9 +72,9 @@ class InherentRiskNameForm(forms.ModelForm):
 class RmcdUserForm(forms.ModelForm):
     class Meta:
         model = InherentRisk
-        fields = ['name','riskMitigation', 'owner', 'targetCompletion', 'status']
+        fields = ['name','risk_Mitigation', 'owner', 'target_Completion', 'status']
 
 class IadUserForm(forms.ModelForm):
     class Meta:
         model = InherentRisk
-        fields = ['name', 'unrectifiedAuditFindings']
+        fields = ['name', 'unrectified_Audit_Findings']

@@ -20,7 +20,7 @@ class MajorActivity(models.Model):
 
 
 class IntegralActivity(models.Model):
-    majorActivity = models.ForeignKey(MajorActivity, on_delete=models.CASCADE)
+    major_Activity = models.ForeignKey(MajorActivity, on_delete=models.CASCADE)
     name = models.CharField(max_length=300)
 
     def __str__(self):
@@ -28,7 +28,7 @@ class IntegralActivity(models.Model):
 
 
 class Objective(models.Model):
-    integralActitivty = models.ForeignKey(IntegralActivity, on_delete=models.CASCADE)
+    integral_Actitivty = models.ForeignKey(IntegralActivity, on_delete=models.CASCADE)
     name = models.CharField(max_length=300)
 
     def __str__(self):
@@ -38,9 +38,7 @@ class Objective(models.Model):
 class InherentRisk(models.Model):
     
     RISKCATAGORY = (('Financial','Financial'),('Reputational','Reputational'),('Marketing','Marketing'),('Legal','Legal'),)
-    PROCEDURALMANUAL = (('Available', 'Available'), ('NA', 'NA'),)
-    MAKERCHECKER = (('Available', 'Available'), ('NA', 'NA'),)
-    DUALCONTROL = (('Available', 'Available'), ('NA', 'NA'),)
+    CHOICES = (('AV', 'Available'), ('NA', 'Not Available'),)
     FREQUENCYOFEXPOSURE =(('Daily', 'Daily'),('Weekly', 'Weekly'),('Monthly', 'Monthly'),('Quarterly', 'Quarterly'),('Semi Anually', 'Semi Anually'),('Anually', 'Anually'),)
     RISKCONDITION = (('Reversible', 'Reversible'), ('Irreversible', 'Irreversible'),)
     CONSEQUENCY = (('Insignificant', 'Insignificant'), ('Moderate', 'Moderate'), ('Major', 'Major'), ('Catastrophic', 'Catastrophic'),)
@@ -50,20 +48,23 @@ class InherentRisk(models.Model):
 
     objective = models.ForeignKey(Objective, on_delete=models.CASCADE, null=False, blank=True)
     name = models.CharField(max_length=300,null=False, blank=True)
-    riskCatagory = models.CharField(max_length=30, choices = RISKCATAGORY, null=False, blank=True)
-    procedureManual = models.CharField(max_length=30, choices = PROCEDURALMANUAL, null=False, blank=True)
-    makerChecker = models.CharField(max_length=30, choices = MAKERCHECKER, null=False, blank=True)
-    dualControl = models.CharField(max_length=30, choices = DUALCONTROL, null=False, blank=True)
-    frequencyofExposure = models.CharField(max_length=30, choices = FREQUENCYOFEXPOSURE, null=False, blank=True)
-    riskCondition = models.CharField(max_length=30, choices = RISKCONDITION, null=False, blank=True)
+    risk_Catagory = models.CharField(max_length=30, choices = RISKCATAGORY, null=False, blank=True)
+    it_Sytem = models.CharField(max_length=30, choices = CHOICES, null=False, blank=True)
+    privilage = models.CharField(max_length=30, choices = CHOICES, null=False, blank=True)
+    procedure_Manual = models.CharField(max_length=30, choices = CHOICES, null=False, blank=True)
+    maker_Checker = models.CharField(max_length=30, choices = CHOICES, null=False, blank=True)
+    dual_Control = models.CharField(max_length=30, choices = CHOICES, null=False, blank=True)
+    frequency_of_Exposure = models.CharField(max_length=30, choices = FREQUENCYOFEXPOSURE, null=False, blank=True)
+    monetary_Value = models.DecimalField(decimal_places=2, max_digits=20, null=True, blank=True)
+    risk_Condition = models.CharField(max_length=30, choices = RISKCONDITION, null=False, blank=True)
     consequence = models.CharField(max_length=30, choices = CONSEQUENCY, null=False, blank=True)
 
-    riskMitigation = models.CharField(max_length=30, choices=RISKMITIGATION, null=False, blank=True)
+    risk_Mitigation = models.CharField(max_length=30, choices=RISKMITIGATION, null=False, blank=True)
     owner = models.CharField(max_length=300,null=False, blank=True)
-    targetCompletion = models.CharField(max_length=300, null=False, blank=True)
+    target_Completion = models.CharField(max_length=300, null=False, blank=True)
     status = models.CharField(max_length=300, null=False, blank=True)
 
-    unrectifiedAuditFindings = models.CharField(max_length=30, choices=UNRECTIFIEDAUDITFINDING, null=False, blank=True)
+    unrectified_Audit_Findings = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.name

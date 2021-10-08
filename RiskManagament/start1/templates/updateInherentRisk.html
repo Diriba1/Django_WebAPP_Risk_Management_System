@@ -26,23 +26,23 @@
                  <thead>
                      <th>index</th>
                      <th>Inherent Risks</th>
-                     <th><button class="btn btn-primary"  data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample2">Actions</button></th>
+                     <th>Actions</th>
                  </thead>
               {% for ma in inherentRisk reversed %}
                  <tr>
                      <th>{{ forloop.counter }}</th>
                      <td>{{ma}}</td>
 
-                     <td class="collapse multi-collapse" id="multiCollapseExample1">
+                     <td>
                       <a class="btn btn-info btn-sm" href="{% url 'updateInherentRisk' ma.id %} ">
                           <i class="fas fa-pencil-alt">
                           </i>
-                          Edit
+                          
                       </a>
                       <a class="btn btn-danger btn-sm" href="{% url 'deleteInherentRisk' ma.id %}">
                           <i class="fas fa-trash">
                           </i>
-                          Delete
+                         
                       </a>
                   </td>
 

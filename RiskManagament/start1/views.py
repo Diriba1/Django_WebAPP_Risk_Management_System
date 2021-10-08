@@ -125,7 +125,7 @@ def integralActivity(request):
 
 #CREATE INTEGRAL ACTIVITY
 def createIntegralActivity(request, pk):
-    IFormSet = inlineformset_factory(MajorActivity, IntegralActivity, fields=('majorActivity', 'name'), extra=5)
+    IFormSet = inlineformset_factory(MajorActivity, IntegralActivity, fields=('major_Activity', 'name'), extra=5)
     
     ma = MajorActivity.objects.get(id=pk) 
     # create object of form
@@ -182,7 +182,7 @@ def objective(request):
 
 #CREATE OBJECTIVE
 def createObjective(request, pk):
-    IFormSet = inlineformset_factory(IntegralActivity, Objective, fields=('integralActitivty', 'name'), extra=5)
+    IFormSet = inlineformset_factory(IntegralActivity, Objective, fields=('integral_Actitivty', 'name'), extra=5)
     
     ma = IntegralActivity.objects.get(id=pk) 
     # create object of form
