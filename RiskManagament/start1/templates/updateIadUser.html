@@ -26,6 +26,7 @@
                  <thead>
                      <th>index</th>
                      <th>Inherent Risks</th>
+                     <th>Risk Level</th>
                      <th>Unrectified Audit Findings</th>
                      <th>Actions</th>
                  </thead>
@@ -33,6 +34,7 @@
                  <tr>
                      <th>{{ forloop.counter }}</th>
                      <td>{{ma}}</td>
+                     <td>{{ma.risk_Level}}</td>
                      <td>{{ma.unrectified_Audit_Findings}}</td>
                      <td>
                       <a class="btn btn-info btn-sm" href="{% url 'updateIadUser' ma.id %} ">

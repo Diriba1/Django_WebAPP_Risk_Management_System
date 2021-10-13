@@ -1,6 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser, User
+from django.db.models.deletion import CASCADE
+from django.conf import settings
+from django import forms
+
 
 # Create your models here.
+
+
 
 class Branch(models.Model):
     TYPE = (('Office', 'Office'), ('Department', 'Department'), ('Branch', 'Branch'))
@@ -11,9 +18,15 @@ class Branch(models.Model):
     def __str__(self):
         return self.name
 
+class CustomUser(AbstractUser):
+    working_Place = models.ForeignKey(Branch, null=True, blank=True, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.username
+
 class MajorActivity(models.Model):
     name = models.CharField(max_length=300)
-    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    added_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name
@@ -43,7 +56,7 @@ class InherentRisk(models.Model):
     RISKCONDITION = (('Reversible', 'Reversible'), ('Irreversible', 'Irreversible'),)
     CONSEQUENCY = (('Insignificant', 'Insignificant'), ('Moderate', 'Moderate'), ('Major', 'Major'), ('Catastrophic', 'Catastrophic'),)
     RISKMITIGATION = (('Tolerate', 'Tolerate'), ('Treat', 'Treat'), ('Transfer', 'Transfer'), ('Terminate', 'Terminate'),)
-    UNRECTIFIEDAUDITFINDING = (('Found', 'Found'), ('Not Found', 'Not found'))
+    RISKLEVEL = (('Low', 'Low'), ('Moderate', 'Moderate'), ('Significant', 'Significant'), ('High', 'High'), ('Extreme', 'Extreme'))
 
 
     objective = models.ForeignKey(Objective, on_delete=models.CASCADE, null=False, blank=True)
@@ -64,6 +77,7 @@ class InherentRisk(models.Model):
     target_Completion = models.CharField(max_length=300, null=False, blank=True)
     status = models.CharField(max_length=300, null=False, blank=True)
 
+    risk_Level = models.CharField(max_length=30, choices=RISKLEVEL, null=False, blank=True)
     unrectified_Audit_Findings = models.IntegerField(null=True, blank=True)
 
     def __str__(self):

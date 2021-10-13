@@ -21,6 +21,7 @@
                     <thead>
                         <th>index</th>
                         <th>Inherent Risks</th>
+                        <th>Risk Level</th>
                         <th>Unrectified Audit Findings</th>
                         <th>actions</th>
                     </thead>
@@ -28,6 +29,7 @@
                        <tr>
                            <th>{{ forloop.counter }}</th>
                            <td>{{ma.name}}</td>
+                           <td>{{ma.risk_Level}}</td>
                            <td>{{ma.unrectified_Audit_Findings}}</td>
             
                            <td>

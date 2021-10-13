@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from .forms import CustomUserCreationForm, InherentRiskForm, IntegralActivityForm, MajorActivityForm, ObjectiveForm, RmcdUserForm, IadUserForm
+from .forms import InherentRiskForm, IntegralActivityForm, MajorActivityForm, ObjectiveForm, RmcdUserForm, IadUserForm, UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.decorators import login_required 
@@ -9,10 +9,15 @@ from django.forms import inlineformset_factory
 
 @login_required(login_url='login')
 def homepage(request):
-    IR = InherentRisk.objects.all()
+    RP = InherentRisk.objects.all()
+    RM = InherentRisk.objects.all()
+    RS = InherentRisk.objects.all()
+    RG = InherentRisk.objects.all()
     offices = Branch.objects.filter(type="Office")
     departments = Branch.objects.filter(type="Department")
     branches = Branch.objects.filter(type="Branch")
+
+   
 
     if request.method=='POST':
         selected_item = get_object_or_404(Branch, pk=request.POST.get('item_id'))
@@ -20,7 +25,7 @@ def homepage(request):
         context1 = {'risk': risk}
         return render(request, 'viewDetail.html', context1)
 
-    context = {'inherentRisk':IR, 'offices':offices, 'departments':departments, 'branches':branches}
+    context = {'RP':RP, 'RM':RM, 'RS':RS, 'RG':RG, 'offices':offices, 'departments':departments, 'branches':branches}
     return render(request, 'homepage.html', context)
 
 def viewDetail(request):
@@ -29,14 +34,14 @@ def viewDetail(request):
 
 def register(request):
     if request.method == 'POST':
-        f = CustomUserCreationForm(request.POST)
+        f = UserRegisterForm(request.POST)
         if f.is_valid():
             f.save()
             messages.success(request, 'Account created successfully')
-            return redirect('register')
+            return redirect('login')
 
     else:
-        f = CustomUserCreationForm()
+        f = UserRegisterForm()
 
     return render(request, 'register.html', {'form': f})
 
@@ -65,13 +70,14 @@ def logoutpage(request):
 
 #MAJOR ACTIVITY
 def majorActivity(request):
-    MA = MajorActivity.objects.all()
+    MA = MajorActivity.objects.filter(added_by=request.user)
   
-    # create object of form
     form = MajorActivityForm(request.POST or None, request.FILES or None)
-      
-    # check if form data is valid
     if form.is_valid():
+        form = form.save(commit=False)
+        form.added_by = request.user
+        print(request.user)
+        print("ncvnfu")
         form.save()
         messages.success(request, 'Saved successfully')
         return redirect('majorActivity')
