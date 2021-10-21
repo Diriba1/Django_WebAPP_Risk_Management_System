@@ -1,27 +1,31 @@
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from .forms import InherentRiskForm, IntegralActivityForm, MajorActivityForm, ObjectiveForm, RmcdUserForm, IadUserForm, UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.decorators import login_required 
-from .models import Branch, MajorActivity, IntegralActivity, Objective,InherentRisk
+from .models import WorkUnit, MajorActivity, IntegralActivity, Objective,InherentRisk
 from django.forms import inlineformset_factory
+from .calculation import cal
 
 
 @login_required(login_url='login')
 def homepage(request):
+    ss = cal.calculation(5)
+    print(ss)
     RP = InherentRisk.objects.all()
     RM = InherentRisk.objects.all()
     RS = InherentRisk.objects.all()
     RG = InherentRisk.objects.all()
-    offices = Branch.objects.filter(type="Office")
-    departments = Branch.objects.filter(type="Department")
-    branches = Branch.objects.filter(type="Branch")
-
+    offices = WorkUnit.objects.filter(type="Office")
+    departments = WorkUnit.objects.filter(type="Department")
+    branches = WorkUnit.objects.filter(type="Branch")
+    print(type(RP))
    
 
     if request.method=='POST':
-        selected_item = get_object_or_404(Branch, pk=request.POST.get('item_id'))
-        risk = Branch.objects.filter(code=selected_item.code)
+        selected_item = get_object_or_404(WorkUnit, pk=request.POST.get('item_id'))
+        risk = WorkUnit.objects.filter(code=selected_item.code)
         context1 = {'risk': risk}
         return render(request, 'viewDetail.html', context1)
 
@@ -36,7 +40,9 @@ def register(request):
     if request.method == 'POST':
         f = UserRegisterForm(request.POST)
         if f.is_valid():
-            f.save()
+            form = f.save(commit=False)
+            form.is_active = False
+            form.save()
             messages.success(request, 'Account created successfully')
             return redirect('login')
 
@@ -76,8 +82,6 @@ def majorActivity(request):
     if form.is_valid():
         form = form.save(commit=False)
         form.added_by = request.user
-        print(request.user)
-        print("ncvnfu")
         form.save()
         messages.success(request, 'Saved successfully')
         return redirect('majorActivity')
@@ -87,7 +91,7 @@ def majorActivity(request):
 
 # update major activity
 def updateMajorActivity(request, pk):
-    MA = MajorActivity.objects.all()
+    MA = MajorActivity.objects.filter(added_by=request.user)
     ma = MajorActivity.objects.get(id=pk)
     form = MajorActivityForm(instance=ma)
 

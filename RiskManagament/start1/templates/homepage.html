@@ -4,25 +4,25 @@
         <div class="container-fluid">
 
           <div class="row nav nav-pills" roles="tablist">
-            <div class="col-2">    
-              <p>Name | Type</title></p>
+            <div class="col-3">    
+              <p class="text-success">{{request.user.working_Place.name}} | {{request.user.working_Place.type}}</title></p>
             </div>
-            <div class="col-10 nav-item btn-group" role="group">
+            <div class="col-9 nav-item btn-group" role="group">
               <ul class="nav nav-pills list-group list-group-horizontal" role="tablist">
                 <li class="nav-item list-group-item">
-                  <button class="btn nav-link btn-info" type="button" data-toggle="pill" href="#menu1">RISK PROFILE</button>
+                  <button class="btn-sm nav-link btn-info" type="button" data-toggle="pill" href="#menu1">RISK PROFILE</button>
                 </li>
                 <li class="nav-item list-group-item">
-                  <button class="btn nav-link btn-info" type="button" data-toggle="pill" href="#menu2">RISK MONITARING</button>
+                  <button class="btn-sm nav-link btn-info" type="button" data-toggle="pill" href="#menu2">RISK MONITARING</button>
                 </li>
                 <li class="nav-item list-group-item">
-                  <button class="btn nav-link btn-info" type="button" data-toggle="pill" href="#menu3">RISK SCORE</button>
+                  <button class="btn-sm nav-link btn-info" type="button" data-toggle="pill" href="#menu3">RISK SCORE</button>
                 </li>
                 <li class="nav-item list-group-item">
-                  <button class="btn nav-link btn-info" type="button" data-toggle="pill" href="#menu4">RISK GRADE</button>
+                  <button class="btn-sm nav-link btn-info" type="button" data-toggle="pill" href="#menu4">RISK GRADE</button>
                 </li>
                 <li class="nav-item list-group-item">
-                  <button class="btn nav-link btn-info" type="button" data-toggle="pill" href="#menu5">RISK UNIVERSE</button>
+                  <button class="btn-sm nav-link btn-info" type="button" data-toggle="pill" href="#menu5">RISK UNIVERSE</button>
                 </li>
               </ul>
 
@@ -32,14 +32,121 @@
             </div> -->
           </div>
           <div class="row">
-            <div class="col-2">
-              <a href="{% url 'majorActivity' %}" class="btn btn-secondary btn-block">RISK REGISTER</a>             
-              <a href="{% url 'rmcdUser' %}" class="btn btn-secondary btn-block">MANAGEMENT AND COMPLIANCE</a>
-              <a href="{% url 'iadUser' %}" class="btn btn-secondary btn-block">AUDIT FINDINGS</a>    
+            <div class="col-3">
+              <a href="{% url 'majorActivity' %}" class="btn-sm btn-secondary btn-block">RISK REGISTER</a>             
+              <!-- <a href="{% url 'rmcdUser' %}" class="btn btn-secondary btn-block">MANAGEMENT AND COMPLIANCE</a>
+              <a href="{% url 'iadUser' %}" class="btn btn-secondary btn-block">AUDIT FINDINGS</a>     -->
+              <hr>
+              {% if request.user.is_RmcdUser %}
+              <p class="text-secondary">MANAGEMENT AND COMPLIANCE</p>
+              <p>
+                <ul class="nav nav-pills" role="tablist">
+                  <li class="nav-item">
+                    <button class="btn-sm nav-link" data-toggle="pill" href="#menu10">Offices</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="btn-sm nav-link" data-toggle="pill" href="#menu20">Departments</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="btn-sm nav-link" data-toggle="pill" href="#menu30">Branches</button>
+                  </li>
+                </ul>
+                </p>
+                <div class="col-12 tab-content">
+                  <div id="menu10" class="container tab-pane">
+                    
+                    <form method="POST">
+                      {% csrf_token %}
+                      <select name="item_id">
+                        {% for i in offices %}
+                          <option value="{{ i.id}}">{{ i.name }}</option>
+                        {% endfor %}
+                      </select>
+                      <button type="submit" class="btn-success">view</button>
+                    </form>
+  
+                  </div>
+                  <div id="menu20" class="container tab-pane">
+                    <form method="POST">
+                      {% csrf_token %}
+                      <select name="item_id">
+                        {% for i in departments %}
+                          <option value="{{ i.id}}">{{ i.name }}</option>
+                        {% endfor %}
+                      </select>
+                      <button type="submit" class="btn-success">view</button>
+                    </form>
+                  </div>
+                  <div id="menu30" class="container tab-pane">
+                    <form method="POST">
+                      {% csrf_token %}
+                      <select name="item_id">
+                        {% for i in branches %}
+                          <option value="{{ i.id}}">{{ i.name }}</option>
+                        {% endfor %}
+                      </select>
+                      <button type="submit" class="btn-success">view</button>
+                    </form>
+                  </div>
+                </div> 
+              {%endif%}
+
+              {% if request.user.is_IadUSer %}
+              <p class="text-secondary">AUDIT FINDINGS</p>
+              <p>
+                <ul class="nav nav-pills" role="tablist">
+                  <li class="nav-item">
+                    <button class="btn-sm nav-link" data-toggle="pill" href="#menu10">Offices</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="btn-sm nav-link" data-toggle="pill" href="#menu20">Departments</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="btn-sm nav-link" data-toggle="pill" href="#menu30">Branches</button>
+                  </li>
+                </ul>
+                </p>
+                <div class="col-12 tab-content">
+                  <div id="menu10" class="container tab-pane">
+                    
+                    <form method="POST">
+                      {% csrf_token %}
+                      <select name="item_id">
+                        {% for i in offices %}
+                          <option value="{{ i.id}}">{{ i.name }}</option>
+                        {% endfor %}
+                      </select>
+                      <button type="submit" class="btn-success">view</button>
+                    </form>
+  
+                  </div>
+                  <div id="menu20" class="container tab-pane">
+                    <form method="POST">
+                      {% csrf_token %}
+                      <select name="item_id">
+                        {% for i in departments %}
+                          <option value="{{ i.id}}">{{ i.name }}</option>
+                        {% endfor %}
+                      </select>
+                      <button type="submit" class="btn-success">view</button>
+                    </form>
+                  </div>
+                  <div id="menu30" class="container tab-pane">
+                    <form method="POST">
+                      {% csrf_token %}
+                      <select name="item_id">
+                        {% for i in branches %}
+                          <option value="{{ i.id}}">{{ i.name }}</option>
+                        {% endfor %}
+                      </select>
+                      <button type="submit" class="btn-success">view</button>
+                    </form>
+                  </div>
+                </div> 
+              {%endif%}
+             
             </div>
-            <div class="col-1">
-              
-            </div>
+           
             <div class="col-9 tab-content">
               <div id="menu1" class="container tab-pane">
                 <p><h3>RISK PROFILE</h3></p> 
@@ -71,7 +178,7 @@
               <div id="menu2" class="container tab-pane">
                 <p><h3>RISK MONITORING</h3></p> 
                 <p>
-                  <table id="example1" class="table table-bordered table-striped">
+                  <table id="example2" class="table table-bordered table-striped">
                     <thead>
                       <th>ID</th>
                       <th>Inherent Risk</th>
@@ -100,7 +207,7 @@
               <div id="menu3" class="container tab-pane">
                 <p><h3>RISK SCORE</h3></p> 
                 <p>
-                  <table id="example2" class="table table-bordered table-striped">
+                  <table id="example1" class="table table-bordered table-striped">
                     <thead>
                       <th>Work Unit</th>
                       <th>Total Risk Score</th>                      
@@ -108,7 +215,7 @@
                     {% for IR in RS reversed %}
                     <tr>
                       <td>{{IR.name}}</td>
-                      <td></td>                                       
+                      <td>none</td>                                       
                     </tr>
                     {%endfor%}
                     
@@ -126,12 +233,12 @@
                     {% for IR in RG reversed %}
                     <tr>
                       <td>{{IR.name}}</td>
-                      <td></td>                                       
+                      <td>none</td>                                       
                     </tr>
                     {%endfor%}
                     <tr>
-                      <td></td>
-                      <td></td>                                        
+                      <td>none</td>
+                      <td>none</td>                                        
                     </tr>
                   </table>
                 </p>
@@ -146,79 +253,15 @@
                       <th>Risk Grade</th>                     
                     </thead>
                     <tr>
-                      <td></td>
-                      <td></td> 
-                      <td></td>                                       
+                      <td>none</td>
+                      <td>none</td> 
+                      <td>none</td>                                       
                     </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>  
-                      <td></td>                                       
-                    </tr>
+
                   </table>
                 </p>
               </div>
             </div>           
-          </div>
-          <div class="row">
-            <div class="col-4">
-              <hr>
-             <p><h3>VIEW</h3></p>
-             <p>
-              <ul class="nav nav-pills" role="tablist">
-                <li class="nav-item">
-                  <button class="nav-link" data-toggle="pill" href="#menu10">Offices</button>
-                </li>
-                <li class="nav-item">
-                  <button class="nav-link" data-toggle="pill" href="#menu20">Departments</button>
-                </li>
-                <li class="nav-item">
-                  <button class="nav-link" data-toggle="pill" href="#menu30">Branches</button>
-                </li>
-              </ul>
-            </p>
-              <div class="col-12 tab-content">
-                <div id="menu10" class="container tab-pane">
-                  
-                  <form method="POST">
-                    {% csrf_token %}
-                    <select name="item_id">
-                      {% for i in offices %}
-                        <option value="{{ i.id}}">{{ i.name }}</option>
-                      {% endfor %}
-                    </select>
-                    <button type="submit" class="btn-success">view</button>
-                  </form>
-
-                </div>
-                <div id="menu20" class="container tab-pane">
-                  <form method="POST">
-                    {% csrf_token %}
-                    <select name="item_id">
-                      {% for i in departments %}
-                        <option value="{{ i.id}}">{{ i.name }}</option>
-                      {% endfor %}
-                    </select>
-                    <button type="submit" class="btn-success">view</button>
-                  </form>
-                </div>
-                <div id="menu30" class="container tab-pane">
-                  <form method="POST">
-                    {% csrf_token %}
-                    <select name="item_id">
-                      {% for i in branches %}
-                        <option value="{{ i.id}}">{{ i.name }}</option>
-                      {% endfor %}
-                    </select>
-                    <button type="submit" class="btn-success">view</button>
-                  </form>
-                </div>
-              </div>     
-
-            </div>
-            <div class="col-8">
-
-            </div>
           </div>
           
         </div>

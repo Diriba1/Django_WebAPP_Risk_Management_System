@@ -1,15 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, User
+from django.contrib.auth.models import AbstractUser
 from django.db.models.deletion import CASCADE
 from django.conf import settings
 from django import forms
 
 
-# Create your models here.
-
-
-
-class Branch(models.Model):
+class WorkUnit(models.Model):
     TYPE = (('Office', 'Office'), ('Department', 'Department'), ('Branch', 'Branch'))
     type = models. CharField(max_length=30, choices=TYPE)
     name = models.CharField(max_length=300)
@@ -19,8 +15,9 @@ class Branch(models.Model):
         return self.name
 
 class CustomUser(AbstractUser):
-    working_Place = models.ForeignKey(Branch, null=True, blank=True, on_delete=models.CASCADE)
-    
+    working_Place = models.ForeignKey(WorkUnit, null=True, blank=True, on_delete=models.CASCADE)
+    is_RmcdUser = models.BooleanField(default=False)
+    is_IadUSer = models.BooleanField(default=False)
     def __str__(self):
         return self.username
 
@@ -41,7 +38,7 @@ class IntegralActivity(models.Model):
 
 
 class Objective(models.Model):
-    integral_Actitivty = models.ForeignKey(IntegralActivity, on_delete=models.CASCADE)
+    integral_Activity = models.ForeignKey(IntegralActivity, on_delete=models.CASCADE)
     name = models.CharField(max_length=300)
 
     def __str__(self):
@@ -53,10 +50,8 @@ class InherentRisk(models.Model):
     RISKCATAGORY = (('Financial','Financial'),('Reputational','Reputational'),('Marketing','Marketing'),('Legal','Legal'),)
     CHOICES = (('AV', 'Available'), ('NA', 'Not Available'),)
     FREQUENCYOFEXPOSURE =(('Daily', 'Daily'),('Weekly', 'Weekly'),('Monthly', 'Monthly'),('Quarterly', 'Quarterly'),('Semi Anually', 'Semi Anually'),('Anually', 'Anually'),)
-    RISKCONDITION = (('Reversible', 'Reversible'), ('Irreversible', 'Irreversible'),)
-    CONSEQUENCY = (('Insignificant', 'Insignificant'), ('Moderate', 'Moderate'), ('Major', 'Major'), ('Catastrophic', 'Catastrophic'),)
+    RISKCONDITION = (('Tolerable', 'Tolerable'), ('Reversible', 'Reversible'), ('costly', 'Costly Reversible'), ('Unreversible', 'Unreversible'))
     RISKMITIGATION = (('Tolerate', 'Tolerate'), ('Treat', 'Treat'), ('Transfer', 'Transfer'), ('Terminate', 'Terminate'),)
-    RISKLEVEL = (('Low', 'Low'), ('Moderate', 'Moderate'), ('Significant', 'Significant'), ('High', 'High'), ('Extreme', 'Extreme'))
 
 
     objective = models.ForeignKey(Objective, on_delete=models.CASCADE, null=False, blank=True)
@@ -70,14 +65,13 @@ class InherentRisk(models.Model):
     frequency_of_Exposure = models.CharField(max_length=30, choices = FREQUENCYOFEXPOSURE, null=False, blank=True)
     monetary_Value = models.DecimalField(decimal_places=2, max_digits=20, null=True, blank=True)
     risk_Condition = models.CharField(max_length=30, choices = RISKCONDITION, null=False, blank=True)
-    consequence = models.CharField(max_length=30, choices = CONSEQUENCY, null=False, blank=True)
+    
 
     risk_Mitigation = models.CharField(max_length=30, choices=RISKMITIGATION, null=False, blank=True)
     owner = models.CharField(max_length=300,null=False, blank=True)
     target_Completion = models.CharField(max_length=300, null=False, blank=True)
     status = models.CharField(max_length=300, null=False, blank=True)
 
-    risk_Level = models.CharField(max_length=30, choices=RISKLEVEL, null=False, blank=True)
     unrectified_Audit_Findings = models.IntegerField(null=True, blank=True)
 
     def __str__(self):

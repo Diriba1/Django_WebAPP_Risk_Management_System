@@ -29,15 +29,15 @@
                    <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <th>index</th>
-                        <th>Integral Activities</th>
                         <th>Major Activities</th>
+                        <th>Integral Activities</th>
                         <th>Actions</th>
                     </thead>
                     {% for ma in integralActivity reversed %}
                        <tr>
                            <th>{{ forloop.counter }}</th>
-                           <td>{{ma.name}}</td>
                            <td>{{ma.major_Activity}}</td>
+                           <td>{{ma.name}}</td>
                            <td>
                               <a class="btn btn-info btn-sm" href="{% url 'updateIntegralActivity' ma.id %}">
                                   <i class="fas fa-pencil-alt">

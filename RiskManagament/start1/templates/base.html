@@ -68,7 +68,7 @@
               </div>
               <div class="col-3">
                 {% for message in messages %}
-                  <div class="alert alert-warning alert-dismissible">
+                  <div id="test" class="alert alert-warning alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <p id="messages"> <i class="icon fas fa-info"></i>{{message}}</p>
                   </div>
@@ -116,6 +116,7 @@
 
 <script>
   $(function () {
+    $('#test').delay(3000).fadeOut();
     $("#example1").DataTable({
       "responsive": true,
       "autoWidth": false,
