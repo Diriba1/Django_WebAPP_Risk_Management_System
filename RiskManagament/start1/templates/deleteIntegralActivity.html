@@ -11,11 +11,20 @@
             </div>
             <div class="col-6">
                 <div class="card card-body">
-                    <p> Are you sure you want delete "{{item}}"</p>
+                    <p> <h4>Are you sure you want delete <i>"{{item}}" </i></h4></p>
                     <form action="{% url 'deleteIntegralActivity' item.id %}" method="post">
                         {% csrf_token%}
-                        <a href="{% url 'integralActivity' %}">Cancel</a>
-                        <input type="submit" name="confirm" value="Confirm">
+                        <div class="row">
+                            <div class="col-4">
+                                <a href="{% url 'integralActivity'%}">Cancel</a>
+                            </div>
+                            <div class="col-4">
+                                
+                            </div>
+                            <div class="col-4">
+                                <input class="btn-danger" type="submit" name="confirm" value="Confirm">  
+                            </div>
+                        </div> 
                     </form>
                 </div>
             </div>

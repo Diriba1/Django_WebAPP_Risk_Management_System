@@ -39,22 +39,21 @@
                 {% for ma in objective reversed %}
                     <tr>
                         <th>{{ forloop.counter }}</th>
-                        <td>{{ma.integral_Actitivty.major_Activity}}</td>
-                        <td>{{ma.integral_Actitivty}}</td>
+                        <td>{{ma.integral_Activity.major_Activity}}</td>
+                        <td>{{ma.integral_Activity}}</td>
                         <td>{{ma.name}}</td>
                         <td>
                             <a class="btn btn-info btn-sm" href="{% url 'updateObjective' ma.id %} ">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                               
+                                <i class="fas fa-pencil-alt" data-toggle="popover" title="edit">
+                                </i>                               
                             </a>
-                            <a class="btn btn-info btn-sm" href="{% url 'createRisk' ma.id %} ">
+                            <!-- <a class="btn btn-info btn-sm" href="{% url 'createRisk' ma.id %} ">
                               <i class="fas fa-plus">
                               </i>
                               Add Inherent Risk
-                            </a>
+                            </a> -->
                             <a class="btn btn-danger btn-sm" href="{% url 'deleteObjective' ma.id %}">
-                                <i class="fas fa-trash">
+                                <i class="fas fa-trash" data-toggle="popover" title="delete">
                                 </i>
                                 
                             </a>

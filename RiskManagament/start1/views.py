@@ -6,30 +6,28 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required 
 from .models import WorkUnit, MajorActivity, IntegralActivity, Objective,InherentRisk
 from django.forms import inlineformset_factory
+from django import forms
 from .calculation import cal
 
 
 @login_required(login_url='login')
 def homepage(request):
-    ss = cal.calculation(5)
-    print(ss)
-    RP = InherentRisk.objects.all()
-    RM = InherentRisk.objects.all()
-    RS = InherentRisk.objects.all()
-    RG = InherentRisk.objects.all()
+    registerRisk = InherentRisk.objects.filter(added_by=request.user)
+        
     offices = WorkUnit.objects.filter(type="Office")
     departments = WorkUnit.objects.filter(type="Department")
     branches = WorkUnit.objects.filter(type="Branch")
-    print(type(RP))
+    TotalScore = cal.totalScore(registerRisk)
+    RiskGrade = cal.grade(TotalScore)
    
-
     if request.method=='POST':
         selected_item = get_object_or_404(WorkUnit, pk=request.POST.get('item_id'))
         risk = WorkUnit.objects.filter(code=selected_item.code)
-        context1 = {'risk': risk}
-        return render(request, 'viewDetail.html', context1)
+        IR = InherentRisk.objects.filter(User).filter(WorkUnit).filter(name = risk.name)
+        context1 = {'inherentRisk':IR}
+        return render(request, 'rmcdUser.html', context1)
 
-    context = {'RP':RP, 'RM':RM, 'RS':RS, 'RG':RG, 'offices':offices, 'departments':departments, 'branches':branches}
+    context = {'registerRisk':registerRisk, 'offices':offices, 'departments':departments, 'branches':branches, 'TotalScore':TotalScore, 'RiskGrade':RiskGrade}
     return render(request, 'homepage.html', context)
 
 def viewDetail(request):
@@ -65,7 +63,7 @@ def loginpage(request):
                 login(request, user)
                 return redirect('homepage')
             else:
-                messages.error(request, 'Username OR password is incorrect')
+                messages.error(request, 'Username OR Password is incorrect')
                 
 
         return render(request, 'login.html', {})
@@ -84,7 +82,7 @@ def majorActivity(request):
         form.added_by = request.user
         form.save()
         messages.success(request, 'Saved successfully')
-        return redirect('majorActivity')
+        return redirect('integralActivity')
   
     context ={'majorActivity':MA, 'form':form}
     return render(request, "majorActivity.html", context)
@@ -119,46 +117,44 @@ def deleteMajorActivity(request, pk):
 
 #INTEGRAL ACTIVITY
 def integralActivity(request):
-    IA = IntegralActivity.objects.all()
-  
-    # create object of form
-    form = IntegralActivityForm(request.POST or None, request.FILES or None)
-      
-    # check if form data is valid
+    IA = IntegralActivity.objects.filter(added_by=request.user)
+    form = IntegralActivityForm(request.user or None, request.POST or None)
+
     if form.is_valid():
+        form = form.save(commit=False)
+        form.added_by = request.user
         form.save()
         messages.success(request, 'Saved successfully')
-        return redirect('integralActivity')
+        return redirect('objective')
   
     context ={'integralActivity':IA, 'form':form}
     return render(request, "integralActivity.html", context)
 
 #CREATE INTEGRAL ACTIVITY
 def createIntegralActivity(request, pk):
-    IFormSet = inlineformset_factory(MajorActivity, IntegralActivity, fields=('major_Activity', 'name'), extra=5)
-    
-    ma = MajorActivity.objects.get(id=pk) 
-    # create object of form
-    form = IFormSet(queryset=IntegralActivity.objects.none(), instance=ma)
-    if request.method == 'POST':
-        form = IFormSet(request.POST, instance=ma)
-    # check if form data is valid
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Saved successfully')
-            return redirect('majorActivity')
-    
-    context ={'majorActivity':ma, 'form':form}
-    return render(request, "createIntegralActivity.html", context)
-
-#uUPDATE INTEGRAL ACTIVITY
-def updateIntegralActivity(request, pk):
-    IA = IntegralActivity.objects.all()
-    ma = IntegralActivity.objects.get(id=pk)
+    ma = MajorActivity.objects.get(id=pk)
     form = IntegralActivityForm(instance=ma)
 
     if request.method == 'POST':
         form = IntegralActivityForm(request.POST, instance=ma)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.added_by = request.user
+            form.save()
+            messages.success(request, 'Saved successfully')
+            return redirect('majorActivity')
+
+    context = {'form': form, 'majorActivity':ma}
+    return render(request, "createIntegralActivity.html", context)
+
+#uUPDATE INTEGRAL ACTIVITY
+def updateIntegralActivity(request, pk):
+    IA = IntegralActivity.objects.filter(added_by=request.user)
+    ma = IntegralActivity.objects.get(id=pk)
+    form = IntegralActivityForm(request.user or None, instance=ma)
+
+    if request.method == 'POST':
+        form = IntegralActivityForm(request.user or None, request.POST or None, instance=ma)
         if form.is_valid():
             form.save()
             messages.success(request, 'Saved successfully')
@@ -180,19 +176,21 @@ def deleteIntegralActivity(request, pk):
 
 #OBJECTIVE
 def objective(request):
-    O = Objective.objects.all()
-    form = ObjectiveForm(request.POST or None, request.FILES or None)
+    O = Objective.objects.filter(added_by=request.user)
+    form = ObjectiveForm(request.user or None, request.POST or None, request.FILES or None)
     if form.is_valid():
+        form = form.save(commit=False)
+        form.added_by = request.user
         form.save()
         messages.success(request, 'Saved successfully')
-        return redirect('objective')
+        return redirect('inherentRisk')
   
     context ={'objective':O, 'form':form}
     return render(request, "objective.html", context)
 
 #CREATE OBJECTIVE
 def createObjective(request, pk):
-    IFormSet = inlineformset_factory(IntegralActivity, Objective, fields=('integral_Actitivty', 'name'), extra=5)
+    IFormSet = inlineformset_factory(IntegralActivity, Objective, fields=('integral_Activity', 'name', 'added_by'), widgets = {'added_by': forms.HiddenInput()}, extra=1)
     
     ma = IntegralActivity.objects.get(id=pk) 
     # create object of form
@@ -201,6 +199,8 @@ def createObjective(request, pk):
         form = IFormSet(request.POST, instance=ma)
     # check if form data is valid
         if form.is_valid():
+            form = form.save(commit=False)
+            form.added_by = request.user
             form.save()
             messages.success(request, 'Saved successfully')
             return redirect('integralActivity')
@@ -210,12 +210,12 @@ def createObjective(request, pk):
 
 #UPDATE OBJECTIVE
 def updateObjective(request, pk):
-    IA = Objective.objects.all()
+    IA = Objective.objects.filter(added_by=request.user)
     ma = Objective.objects.get(id=pk)
-    form = ObjectiveForm(instance=ma)
+    form = ObjectiveForm(request.user or None, instance=ma)
 
     if request.method == 'POST':
-        form = ObjectiveForm(request.POST, instance=ma)
+        form = ObjectiveForm(request.user or None, request.POST, instance=ma)
         if form.is_valid():
             form.save()
             messages.success(request, 'Saved successfully')
@@ -227,7 +227,7 @@ def updateObjective(request, pk):
 
 #DELETE OBJECTIVE
 def deleteObjective(request, pk):
-    ma = objective.objects.get(id=pk)
+    ma = Objective.objects.get(id=pk)
     if request.method == 'POST':
         ma.delete()
         messages.success(request, 'Deleted successfully')
@@ -238,10 +238,18 @@ def deleteObjective(request, pk):
 
 #INHERENT RISK
 def inherentRisk(request):
-    IR = InherentRisk.objects.all()
-    form = InherentRiskForm(request.POST or None, request.FILES or None)
+    IR = InherentRisk.objects.filter(added_by=request.user)
+    form = InherentRiskForm(request.user or None, request.POST or None, request.FILES or None)
       
     if form.is_valid():
+        form = form.save(commit=False)
+        form.added_by = request.user
+        monetaryValue = cal.monetaryValue(form.monetary_Value)
+        consequence = cal.consequence(form.risk_Condition, monetaryValue)
+        controlLayer = cal.controlLayer(form.it_System, form.privilage, form.procedure_Manual, form.maker_Checker, form.dual_Control)
+        likelihood = cal.likelihood(controlLayer, form.frequency_of_Exposure)
+        level = cal.riskLevel(consequence, likelihood)
+        form.level = level
         form.save()
         messages.success(request, 'Saved successfully')
         return redirect('inherentRisk')
@@ -251,7 +259,7 @@ def inherentRisk(request):
 
 #CREATE RISK
 def createRisk(request, pk):
-    IFormSet = inlineformset_factory(Objective, InherentRisk, fields=('objective', 'name'), extra=5)
+    IFormSet = inlineformset_factory(Objective, InherentRisk, fields=('objective', 'name'), extra=1)
     
     ma = Objective.objects.get(id=pk) 
     # create object of form
@@ -260,6 +268,8 @@ def createRisk(request, pk):
         form = IFormSet(request.POST, instance=ma)
     # check if form data is valid
         if form.is_valid():
+            form = form.save(commit=False)
+            form.added_by = request.user
             form.save()
             messages.success(request, 'Saved successfully')
             return redirect('objective')
@@ -270,13 +280,20 @@ def createRisk(request, pk):
     
 #UPDATE INHERENTRISK
 def updateInherentRisk(request, pk):
-    IR = InherentRisk.objects.all()
+    IR = InherentRisk.objects.filter(added_by=request.user)
     ma = InherentRisk.objects.get(id=pk)
-    form = InherentRiskForm(instance=ma)
+    form = InherentRiskForm(request.user or None, instance=ma)
 
     if request.method == 'POST':
-        form = InherentRiskForm(request.POST, instance=ma)
+        form = InherentRiskForm(request.user or None, request.POST, instance=ma)
         if form.is_valid():
+            form = form.save(commit=False)
+            monetaryValue = cal.monetaryValue(form.monetary_Value)
+            consequence = cal.consequence(form.risk_Condition, monetaryValue)
+            controlLayer = cal.controlLayer(form.it_System, form.privilage, form.procedure_Manual, form.maker_Checker, form.dual_Control)
+            likelihood = cal.likelihood(controlLayer, form.frequency_of_Exposure)
+            level = cal.riskLevel(consequence, likelihood)
+            form.level = level
             form.save()
             messages.success(request, 'Saved successfully')
             return redirect('inherentRisk')

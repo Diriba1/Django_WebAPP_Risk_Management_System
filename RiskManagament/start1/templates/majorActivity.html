@@ -39,17 +39,17 @@
                      <td>{{ma}}</td>
                      <td>
                       <a class="btn btn-info btn-sm" href="{% url 'updateMajorActivity' ma.id %} ">
-                          <i class="fas fa-pencil-alt">
+                          <i class="fas fa-pencil-alt" data-toggle="popover" title="edit">
                           </i>
                          
                       </a>
-                      <a class="btn btn-info btn-sm" href="{% url 'createIntegralActivity' ma.id %} ">
+                      <!-- <a class="btn btn-info btn-sm" href="{% url 'createIntegralActivity' ma.id %} ">
                         <i class="fas fa-plus">
                         </i>
                         Add Integral Activity
-                      </a>
+                      </a> -->
                       <a class="btn btn-danger btn-sm" href="{% url 'deleteMajorActivity' ma.id %}">
-                          <i class="fas fa-trash">
+                          <i class="fas fa-trash" data-toggle="popover" title="delete">
                           </i>
                           
                       </a>

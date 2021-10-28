@@ -41,18 +41,18 @@
                     {% for ma in inherentRisk reversed %}
                        <tr>
                            <th>{{ forloop.counter }}</th>
-                           <td>{{ma.objective.integral_Actitivty.major_Activity}}</td>
-                           <td>{{ma.objective.integral_Actitivty}}</td>
+                           <td>{{ma.objective.integral_Activity.major_Activity}}</td>
+                           <td>{{ma.objective.integral_Activity}}</td>
                            <td>{{ma.objective}}</td>
                            <td>{{ma.name}}</td>
                            <td>
                             <a class="btn btn-info btn-sm" href="{% url 'updateInherentRisk' ma.id %}">
-                                <i class="fas fa-pencil-alt">
+                                <i class="fas fa-pencil-alt" data-toggle="popover" title="edit">
                                 </i>
                                
                             </a>
                             <a class="btn btn-danger btn-sm" href="{% url 'deleteInherentRisk' ma.id %}">
-                                <i class="fas fa-trash">
+                                <i class="fas fa-trash" data-toggle="popover" title="delete">
                                 </i>
                                
                             </a>

@@ -20,16 +20,16 @@
                    <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <th>index</th>
+                        <th>Work Unit</th>
                         <th>Inherent Risks</th>
-                        <th>Risk Level</th>
                         <th>Unrectified Audit Findings</th>
                         <th>actions</th>
                     </thead>
                     {% for ma in inherentRisk reversed %}
                        <tr>
                            <th>{{ forloop.counter }}</th>
+                           <td>{{ma.added_by.working_Place}}</td>
                            <td>{{ma.name}}</td>
-                           <td>{{ma.risk_Level}}</td>
                            <td>{{ma.unrectified_Audit_Findings}}</td>
             
                            <td>

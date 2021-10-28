@@ -1,59 +1,8 @@
 from .models import InherentRisk, IntegralActivity, MajorActivity, Objective, CustomUser
 from django.contrib.auth.models import User
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import UserCreationForm
 
-
-
-# class CustomUserCreationForm(forms.Form):
-#     username = forms.CharField(label='Enter Username', min_length=4, max_length=150)
-#     email = forms.EmailField(label='Enter email')
-#     password1 = forms.CharField(label='Enter password', widget=forms.PasswordInput)
-#     password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput)
-
-#     def clean_username(self):
-#         username = self.cleaned_data['username'].lower()
-#         r = User.objects.filter(username=username)
-#         if r.count():
-#             raise  ValidationError("Username already exists")
-#         return username
-
-#     def clean_email(self):
-#         email = self.cleaned_data['email'].lower()
-#         r = User.objects.filter(email=email)
-#         if r.count():
-#             raise  ValidationError("Email already exists")
-#         return email
-    
-#     def clean_password2(self):
-#         password1 = self.cleaned_data.get('password1')
-#         password2 = self.cleaned_data.get('password2')
-
-#         if password1 and password2 and password1 != password2:
-#             raise ValidationError("Password don't match")
-
-#         return password2
-
-#     def save(self, commit=True):
-#         user = User.objects.create_user(
-#             self.cleaned_data['username'],
-#             self.cleaned_data['email'],
-#             self.cleaned_data['password1']
-#         )
-#         return user
-
-# class CustomUserCreationForm(UserCreationForm):
-
-#     class Meta:
-#         model = CustomUser
-#         fields = ('username', 'email', 'working_Place')
-
-# class CustomUserChangeForm(UserChangeForm):
-
-#     class Meta:
-#         model = CustomUser
-#         fields = ('username', 'email', 'working_Place')
 
 class UserRegisterForm(UserCreationForm):
     class Meta:
@@ -69,24 +18,42 @@ class MajorActivityForm(forms.ModelForm):
         widgets = {'added_by': forms.HiddenInput()}
 
 class IntegralActivityForm(forms.ModelForm):
+
+    def __init__(self, user, *args, **kwargs):
+        super(IntegralActivityForm, self).__init__(*args, **kwargs)
+        self.fields['major_Activity'].queryset = MajorActivity.objects.filter(added_by=user)
+
     class Meta:
         model = IntegralActivity
         fields = '__all__'
+        widgets = {'added_by': forms.HiddenInput()}
 
 class ObjectiveForm(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        super(ObjectiveForm, self).__init__(*args, **kwargs)
+        self.fields['integral_Activity'].queryset = IntegralActivity.objects.filter(added_by=user)
+
     class Meta:
         model = Objective
         fields = '__all__'
+        widgets = {'added_by': forms.HiddenInput()}
 
 class InherentRiskForm(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        super(InherentRiskForm, self).__init__(*args, **kwargs)
+        self.fields['objective'].queryset = Objective.objects.filter(added_by=user)
+        
     class Meta:
         model = InherentRisk
-        fields = ['objective', 'name', 'risk_Catagory', 'it_Sytem', 'privilage', 'procedure_Manual', 'maker_Checker', 'dual_Control', 'frequency_of_Exposure', 'monetary_Value', 'risk_Condition']
+        fields = ['objective', 'name','level', 'risk_Catagory', 'it_System', 'privilage', 'procedure_Manual', 'maker_Checker', 'dual_Control', 'frequency_of_Exposure', 'monetary_Value', 'risk_Condition']
+        widgets = {'level': forms.HiddenInput()}
+        
 
 class InherentRiskNameForm(forms.ModelForm):
     class Meta:
         model = InherentRisk
-        fields = ['name']
+        fields = ['name', 'added_by']
+        widgets = {'added_by': forms.HiddenInput()}
 
 class RmcdUserForm(forms.ModelForm):
     class Meta:

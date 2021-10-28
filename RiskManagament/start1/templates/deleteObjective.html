@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+        {% for message in messages %}
+            <p id="messages">{{message}}</p>
+        {% endfor %}
+        <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+            </div>
+            <div class="col-6">
+                <div class="card card-body">
+                    <p> <h4>Are you sure you want delete <i>"{{item}}" </i></h4></p>
+                    <form action="{% url 'deleteObjective' item.id %}" method="post">
+                        {% csrf_token%}
+                        <div class="row">
+                            <div class="col-4">
+                                <a href="{% url 'objective'%}">Cancel</a>
+                            </div>
+                            <div class="col-4">
+                                
+                            </div>
+                            <div class="col-4">
+                                <input class="btn-danger" type="submit" name="confirm" value="Confirm">  
+                            </div>
+                        </div>   
+                    </form>
+                </div>
+            </div>
+            <div class="col-3">                
+            </div>
+        </div>
+        </div>
+        
+{%endblock%}

@@ -29,15 +29,11 @@
         <div class="col">
           <div>
             <div class="card card-body">
-                <form method="post">
-                    {% csrf_token%}
-                    {{ form.management_form}}
-                    {% for form in form %}
-                    {{ form }}
-                    <hr>
-                    {% endfor %}
-                    <button class="btn btn-app btn-sm mr-4" type="submit" value="Submit"><i class="fas fa-save"></i> Save</button>
-                </form>
+              <form method="post">
+                {% csrf_token%}
+                {{ form.as_p }}
+                <button class="btn btn-app btn-sm mr-4" type="submit" value="Submit"><i class="fas fa-save"></i> Save</button>
+            </form>
             </div>
           </div>
         </div>
