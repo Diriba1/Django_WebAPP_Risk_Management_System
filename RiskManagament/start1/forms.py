@@ -45,7 +45,7 @@ class InherentRiskForm(forms.ModelForm):
         
     class Meta:
         model = InherentRisk
-        fields = ['objective', 'name','level', 'risk_Catagory', 'it_System', 'privilage', 'procedure_Manual', 'maker_Checker', 'dual_Control', 'frequency_of_Exposure', 'monetary_Value', 'risk_Condition']
+        fields = ['objective', 'name','level', 'it_System', 'privilage', 'procedure_Manual', 'maker_Checker', 'dual_Control', 'frequency_of_Exposure', 'monetary_Value', 'risk_Condition']
         widgets = {'level': forms.HiddenInput()}
         
 
@@ -58,7 +58,7 @@ class InherentRiskNameForm(forms.ModelForm):
 class RmcdUserForm(forms.ModelForm):
     class Meta:
         model = InherentRisk
-        fields = ['name','risk_Mitigation', 'owner', 'target_Completion', 'status']
+        fields = ['name','risk_Mitigation', 'risk_Catagory', 'owner', 'target_Completion', 'status']
 
 class IadUserForm(forms.ModelForm):
     class Meta:

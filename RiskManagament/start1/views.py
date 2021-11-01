@@ -13,7 +13,7 @@ from .calculation import cal
 @login_required(login_url='login')
 def homepage(request):
     registerRisk = InherentRisk.objects.filter(added_by=request.user)
-        
+       
     offices = WorkUnit.objects.filter(type="Office")
     departments = WorkUnit.objects.filter(type="Department")
     branches = WorkUnit.objects.filter(type="Branch")

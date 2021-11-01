@@ -57,7 +57,7 @@ class InherentRisk(models.Model):
     RISKMITIGATION = (('Tolerate', 'Tolerate'), ('Treat', 'Treat'), ('Transfer', 'Transfer'), ('Terminate', 'Terminate'),)
 
     added_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
-    objective = models.ForeignKey(Objective, on_delete=models.CASCADE, null=False, blank=True)
+    objective = models.ForeignKey(Objective, on_delete=models.CASCADE, null=False, blank=False)
     name = models.CharField(max_length=300,null=False, blank=True)
     risk_Catagory = models.CharField(max_length=30, choices = RISKCATAGORY, null=False, blank=True)
     it_System = models.CharField(max_length=30, choices = CHOICES, null=False, blank=True)
