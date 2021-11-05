@@ -7,16 +7,19 @@ class cal():
         return x
     
     def monetaryValue(m):
-        if 500001<=m and m<=100000000000000:
-            return "Extremely High"
-        elif 100001<=m and m<=500000:
-            return "High"
-        elif 10001<=m and m<=100000:
-            return "Significant"
-        elif 1001<=m and m<=10000:
-            return "Minor"
-        elif 1<=m and m<=1000:
-            return "Insignificant"
+        if m != None:
+            if 500001<=m and m<=100000000000000:
+                return "Extremely High"
+            elif 100001<=m and m<=500000:
+                return "High"
+            elif 10001<=m and m<=100000:
+                return "Significant"
+            elif 1001<=m and m<=10000:
+                return "Minor"
+            elif 1<=m and m<=1000:
+                return "Insignificant"
+            else:
+                return "unknown"
         else:
             return "unknown"
 

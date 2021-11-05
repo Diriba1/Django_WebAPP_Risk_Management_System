@@ -2,6 +2,7 @@ from .models import InherentRisk, IntegralActivity, MajorActivity, Objective, Cu
 from django.contrib.auth.models import User
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.admin.widgets import AdminDateWidget
 
 
 class UserRegisterForm(UserCreationForm):
@@ -58,7 +59,10 @@ class InherentRiskNameForm(forms.ModelForm):
 class RmcdUserForm(forms.ModelForm):
     class Meta:
         model = InherentRisk
-        fields = ['name','risk_Mitigation', 'risk_Catagory', 'owner', 'target_Completion', 'status']
+        fields = ['name','risk_Mitigation', 'risk_Catagory', 'owner', 'target_Completion', 'management_Plan']
+        widgets = {
+        'target_Completion': forms.DateInput(attrs=dict(type='date'))
+    }
 
 class IadUserForm(forms.ModelForm):
     class Meta:

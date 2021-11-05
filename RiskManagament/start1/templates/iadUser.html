@@ -14,7 +14,7 @@
             </p>
       
             <div class="row">
-              <div class="col-9">
+              <div class="col-10">
                 <div>
                   <div class="card card-body">
                    <table id="example1" class="table table-bordered table-striped">
@@ -22,7 +22,11 @@
                         <th>index</th>
                         <th>Work Unit</th>
                         <th>Inherent Risks</th>
-                        <th>Unrectified Audit Findings</th>
+                        <th>Risk Catagory</th>
+                        <th>Risk Level</th>                      
+                        <th>Mitigation</th>
+                        <th>Risk Score</th>
+                        <th>Audit Findings</th>
                         <th>actions</th>
                     </thead>
                     {% for ma in inherentRisk reversed %}
@@ -30,8 +34,15 @@
                            <th>{{ forloop.counter }}</th>
                            <td>{{ma.added_by.working_Place}}</td>
                            <td>{{ma.name}}</td>
-                           <td>{{ma.unrectified_Audit_Findings}}</td>
-            
+                           <td>{{ma.risk_Catagory}}</td>
+                           <td>{{ma.level_word}}</td>                     
+                           <td>{{ma.risk_Mitigation}}</td>
+                           {%if ma.score == -1 %}
+                             <td>Unknown</td>
+                           {%else%}
+                           <td><b>{{ma.score}}</b></td>
+                           {%endif%}
+                           <td>{{ma.unrectified_Audit_Findings}}</td>           
                            <td>
                             <a class="btn btn-info btn-sm" href="{% url 'updateIadUser' ma.id %}">
                                 <i class="fas fa-pencil-alt">
@@ -45,7 +56,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-2">
                 <div class="collapse multi-collapse" id="multiCollapseExample2">
                   <div class="card card-body">
                       <form method="post">

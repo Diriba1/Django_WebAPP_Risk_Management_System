@@ -8,6 +8,6 @@ admin.site.index_title = " admin area"
 admin.site.register(CustomUser)
 admin.site.register(WorkUnit)
 # admin.site.register(MajorActivity)
-# admin.site.register(InherentRisk)
+admin.site.register(InherentRisk)
 # admin.site.register(IntegralActivity)
 

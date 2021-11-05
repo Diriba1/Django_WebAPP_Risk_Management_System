@@ -147,38 +147,38 @@
               <div id="menu1" class="container tab-pane">
                 <p><h3>RISK PROFILE</h3></p> 
                 <p>
-                  <table id="example1" class="table table-bordered table-striped">
+                  <table id="example1" class="table table-bordered table-striped table-responsive">
                     <thead>
                       <th>ID</th>
                       <th>Inherent Risk</th>
                       <th>Risk Catagory</th>
-                      <th>Risk Level</th>
-                      <th>Risk Score</th>
+                      <th>Risk Level</th>                      
                       <th>Mitigation</th>
                       <th>Audit Findings </th>
+                      <th>Risk Score</th>
                     </thead>
                     {% for IR in registerRisk reversed %}
                     <tr>
                       <td>{{IR.id}}</td>
                       <td>{{IR.name}}</td>
                       <td>{{IR.risk_Catagory}}</td>
-                      <td>{{IR.level_word}}</td>
+                      <td>{{IR.level_word}}</td>                     
+                      <td>{{IR.risk_Mitigation}}</td>
+                      <td>{{IR.unrectified_Audit_Findings}}</td> 
                       {%if IR.score == -1 %}
                         <td>Unknown</td>
                       {%else%}
-                      <td>{{IR.score}}</td>
-                      {%endif%}
-                      <td>{{IR.risk_Mitigation}}</td>
-                      <td>{{IR.unrectified_Audit_Findings}}</td>                    
+                      <td><b>{{IR.score}}</b></td>
+                      {%endif%}                   
                     </tr>
-                   {%endfor%}
+                    {%endfor%}
                   </table>
                 </p>
               </div>
               <div id="menu2" class="container tab-pane">
                 <p><h3>RISK MONITORING</h3></p> 
                 <p>
-                  <table id="example2" class="table table-bordered table-striped">
+                  <table id="example2" class="table table-bordered table-striped table-responsive">
                     <thead>
                       <th>ID</th>
                       <th>Inherent Risk</th>
@@ -207,7 +207,7 @@
               <div id="menu3" class="container tab-pane">
                 <p><h3>RISK SCORE</h3></p> 
                 <p>
-                  <table class="table table-bordered table-striped">
+                  <table class="table table-dark">
                     <thead>
                       <th>Work Unit</th>
                       <th>Total Risk Score</th>                      
@@ -255,7 +255,6 @@
             </div>           
           </div>
           
-        </div>
-      
+        </div>   
 
 {% endblock %}

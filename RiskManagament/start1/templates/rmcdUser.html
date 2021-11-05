@@ -14,7 +14,7 @@
             </p>
       
             <div class="row">
-              <div class="col-9">
+              <div class="col-10">
                 <div>
                   <div class="card card-body">
                    <table id="example1" class="table table-bordered table-striped">
@@ -22,6 +22,7 @@
                         <th>index</th>
                         <th>Work Unit</th>
                         <th>Inherent Risks</th>
+                        <th>Risk Catagory</th>
                         <th>Risk Mitigation</th>
                         <th>Owner</th>
                         <th>Target completion</th>
@@ -33,6 +34,7 @@
                            <th>{{ forloop.counter }}</th>
                            <td>{{ma.added_by.working_Place}}</td>
                            <td>{{ma.name}}</td>
+                           <td>{{ma.risk_Catagory}}</td>
                            <td>{{ma.risk_Mitigation}}</td>
                            <td>{{ma.owner}}</td>
                            <td>{{ma.target_Completion}}</td>
@@ -50,7 +52,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-2">
                 <div class="collapse multi-collapse" id="multiCollapseExample2">
                   <div class="card card-body">
                       <form method="post">

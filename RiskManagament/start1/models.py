@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models.deletion import CASCADE
 from django.conf import settings
 from django import forms
+from datetime import date
 
 
 
@@ -10,7 +11,7 @@ class WorkUnit(models.Model):
     TYPE = (('Office', 'Office'), ('Department', 'Department'), ('Branch', 'Branch'))
     type = models. CharField(max_length=30, choices=TYPE)
     name = models.CharField(max_length=300)
-    code = models.CharField(max_length=50)
+    # code = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
@@ -71,8 +72,9 @@ class InherentRisk(models.Model):
     
     risk_Mitigation = models.CharField(max_length=30, choices=RISKMITIGATION, null=False, blank=True)
     owner = models.CharField(max_length=300,null=False, blank=True)
-    target_Completion = models.CharField(max_length=300, null=False, blank=True)
-    status = models.CharField(max_length=300, null=False, blank=True)
+    target_Completion = models.DateField(max_length=300, null=False, blank=True)
+    # status = models.CharField(max_length=300, null=False, blank=True)
+    management_Plan = models.TextField(null=False, blank=True)
 
     unrectified_Audit_Findings = models.IntegerField(null=True, blank=True)
     level = models.IntegerField(null=True, blank=True)
@@ -99,3 +101,9 @@ class InherentRisk(models.Model):
             return self.unrectified_Audit_Findings * self.level
         else:
             return -1
+
+    def status(self):
+        if date.today() > self.target_Completion:
+            return "Expired"
+        else:
+            return "Active"
