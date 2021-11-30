@@ -1,4 +1,7 @@
+
+from typing_extensions import Self
 from django.contrib.auth.models import User
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from .forms import InherentRiskForm, IntegralActivityForm, MajorActivityForm, ObjectiveForm, RmcdUserForm, IadUserForm, UserRegisterForm
 from django.contrib import messages
@@ -62,6 +65,10 @@ def loginpage(request):
             if user is not None:
                 login(request, user)
                 return redirect('homepage')
+                # return redirect(Self.request.GET.get('next'))
+                # return HttpResponseRedirect(request.POST.get('next'))
+
+
             else:
                 messages.error(request, 'Username OR Password is incorrect')
                 
@@ -73,6 +80,7 @@ def logoutpage(request):
     return redirect('login')
 
 #MAJOR ACTIVITY
+@login_required(login_url='login')
 def majorActivity(request):
     MA = MajorActivity.objects.filter(added_by=request.user)
   
@@ -88,6 +96,7 @@ def majorActivity(request):
     return render(request, "majorActivity.html", context)
 
 # update major activity
+@login_required(login_url='login')
 def updateMajorActivity(request, pk):
     MA = MajorActivity.objects.filter(added_by=request.user)
     ma = MajorActivity.objects.get(id=pk)
@@ -104,6 +113,7 @@ def updateMajorActivity(request, pk):
     return render(request, 'updateMajorActivity.html', context)
 
 # delete major activity
+@login_required(login_url='login')
 def deleteMajorActivity(request, pk):
     ma = MajorActivity.objects.get(id=pk)
     if request.method == 'POST':
@@ -116,6 +126,7 @@ def deleteMajorActivity(request, pk):
 
 
 #INTEGRAL ACTIVITY
+@login_required(login_url='login')
 def integralActivity(request):
     IA = IntegralActivity.objects.filter(added_by=request.user)
     form = IntegralActivityForm(request.user or None, request.POST or None)
@@ -131,6 +142,7 @@ def integralActivity(request):
     return render(request, "integralActivity.html", context)
 
 #CREATE INTEGRAL ACTIVITY
+@login_required(login_url='login')
 def createIntegralActivity(request, pk):
     ma = MajorActivity.objects.get(id=pk)
     form = IntegralActivityForm(instance=ma)
@@ -148,6 +160,7 @@ def createIntegralActivity(request, pk):
     return render(request, "createIntegralActivity.html", context)
 
 #uUPDATE INTEGRAL ACTIVITY
+@login_required(login_url='login')
 def updateIntegralActivity(request, pk):
     IA = IntegralActivity.objects.filter(added_by=request.user)
     ma = IntegralActivity.objects.get(id=pk)
@@ -164,6 +177,7 @@ def updateIntegralActivity(request, pk):
     return render(request, "updateIntegralActivity.html", context)
 
 #delete INTEGRAL ACTIVITY
+@login_required(login_url='login')
 def deleteIntegralActivity(request, pk):
     ma = IntegralActivity.objects.get(id=pk)
     if request.method == 'POST':
@@ -175,6 +189,7 @@ def deleteIntegralActivity(request, pk):
     return render(request, "deleteIntegralActivity.html", context)
 
 #OBJECTIVE
+@login_required(login_url='login')
 def objective(request):
     O = Objective.objects.filter(added_by=request.user)
     form = ObjectiveForm(request.user or None, request.POST or None, request.FILES or None)
@@ -189,6 +204,7 @@ def objective(request):
     return render(request, "objective.html", context)
 
 #CREATE OBJECTIVE
+@login_required(login_url='login')
 def createObjective(request, pk):
     IFormSet = inlineformset_factory(IntegralActivity, Objective, fields=('integral_Activity', 'name', 'added_by'), widgets = {'added_by': forms.HiddenInput()}, extra=1)
     
@@ -209,6 +225,7 @@ def createObjective(request, pk):
     return render(request, "createObjective.html", context)
 
 #UPDATE OBJECTIVE
+@login_required(login_url='login')
 def updateObjective(request, pk):
     IA = Objective.objects.filter(added_by=request.user)
     ma = Objective.objects.get(id=pk)
@@ -226,6 +243,7 @@ def updateObjective(request, pk):
 
 
 #DELETE OBJECTIVE
+@login_required(login_url='login')
 def deleteObjective(request, pk):
     ma = Objective.objects.get(id=pk)
     if request.method == 'POST':
@@ -237,6 +255,7 @@ def deleteObjective(request, pk):
     return render(request, "deleteObjective.html", context)
 
 #INHERENT RISK
+@login_required(login_url='login')
 def inherentRisk(request):
     IR = InherentRisk.objects.filter(added_by=request.user)
     form = InherentRiskForm(request.user or None, request.POST or None, request.FILES or None)
@@ -258,6 +277,7 @@ def inherentRisk(request):
     return render(request, "inherentRisk.html", context)
 
 #CREATE RISK
+@login_required(login_url='login')
 def createRisk(request, pk):
     IFormSet = inlineformset_factory(Objective, InherentRisk, fields=('objective', 'name'), extra=1)
     
@@ -279,6 +299,7 @@ def createRisk(request, pk):
 
     
 #UPDATE INHERENTRISK
+@login_required(login_url='login')
 def updateInherentRisk(request, pk):
     IR = InherentRisk.objects.filter(added_by=request.user)
     ma = InherentRisk.objects.get(id=pk)
@@ -303,6 +324,7 @@ def updateInherentRisk(request, pk):
 
 
 #DELETE INHERENT RISK
+@login_required(login_url='login')
 def deleteInherentRisk(request, pk):
     ma = InherentRisk.objects.get(id=pk)
     if request.method == 'POST':
@@ -313,11 +335,13 @@ def deleteInherentRisk(request, pk):
     context = {'item':ma}
     return render(request, "deleteInherentRisk.html", context)
 
+@login_required(login_url='login')
 def rmcdUser(request):
     IR = InherentRisk.objects.all()
     context = {'inherentRisk':IR}
     return render(request, 'rmcdUser.html', context)
 
+@login_required(login_url='login')
 def updateRmcdUser(request, pk):
     IR = InherentRisk.objects.all()
     ma = InherentRisk.objects.get(id=pk)
@@ -332,14 +356,14 @@ def updateRmcdUser(request, pk):
 
     context = {'form': form, 'rmcdUser':IR}
     return render(request, "updateRmcdUser.html", context)
-
+@login_required(login_url='login')
 def iadUser(request):
     IR = InherentRisk.objects.all()
     form = IadUserForm()
     context = {'inherentRisk':IR, 'form':form}
     return render(request, 'iadUser.html', context)
 
-
+@login_required(login_url='login')
 def updateIadUser(request, pk):
     IR = InherentRisk.objects.all()
     ma = InherentRisk.objects.get(id=pk)
